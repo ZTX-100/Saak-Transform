@@ -1,0 +1,58 @@
+import numpy as np
+import cPickle
+import gzip
+import matplotlib.pyplot as plt
+
+f = gzip.open('./mnist.pkl.gz', 'rb')
+train_set, valid_set, test_set = cPickle.load(f)
+f.close()
+train = np.concatenate((train_set[0], valid_set[0]), 0)
+train_label = np.concatenate((train_set[1], valid_set[1]))
+test = test_set[0]
+test_label = test_set[1]
+
+train_1 = np.load("./coefficients/train_1.npy")
+train_2 = np.load("./coefficients/train_2.npy")
+train_3 = np.load("./coefficients/train_3.npy")
+train_4 = np.load("./coefficients/train_4.npy")
+train_5 = np.load("./coefficients/train_5.npy")
+print("train_1.shape: {}".format(train_1.shape))
+print("train_2.shape: {}".format(train_2.shape))
+print("train_3.shape: {}".format(train_3.shape))
+print("train_4.shape: {}".format(train_4.shape))
+print("train_5.shape: {}".format(train_5.shape))
+
+zip_train_1 = zip(train_1, train_label)
+zip_train_2 = zip(train_2, train_label)
+zip_train_3 = zip(train_3, train_label)
+zip_train_4 = zip(train_4, train_label)
+zip_train_5 = zip(train_5, train_label)
+train_1_7 = np.array([dat for dat, k in zip_train_1 if k == 7])
+train_2_7 = np.array([dat for dat, k in zip_train_2 if k == 7])
+train_3_7 = np.array([dat for dat, k in zip_train_3 if k == 7])
+train_4_7 = np.array([dat for dat, k in zip_train_4 if k == 7])
+train_5_7 = np.array([dat for dat, k in zip_train_5 if k == 7])
+train_1_9 = np.array([dat for dat, k in zip_train_1 if k == 9])
+train_2_9 = np.array([dat for dat, k in zip_train_2 if k == 9])
+train_3_9 = np.array([dat for dat, k in zip_train_3 if k == 9])
+train_4_9 = np.array([dat for dat, k in zip_train_4 if k == 9])
+train_5_9 = np.array([dat for dat, k in zip_train_5 if k == 9])
+print("train_1_7.shape: {}".format(train_1_7.shape))
+print("train_2_7.shape: {}".format(train_2_7.shape))
+print("train_3_7.shape: {}".format(train_3_7.shape))
+print("train_4_7.shape: {}".format(train_4_7.shape))
+print("train_5_7.shape: {}".format(train_5_7.shape))
+print("train_1_9.shape: {}".format(train_1_9.shape))
+print("train_2_9.shape: {}".format(train_2_9.shape))
+print("train_3_9.shape: {}".format(train_3_9.shape))
+print("train_4_9.shape: {}".format(train_4_9.shape))
+print("train_5_9.shape: {}".format(train_5_9.shape))
+
+train_7 = np.mean(abs(train_5_7), axis=0)
+train_9 = np.mean(abs(train_5_9), axis=0)
+plt.plot(train_7, color='r', label='7')
+plt.plot(train_9, color='k', label='9')
+plt.xlabel("index")
+plt.title("The fifth stage with {} coefficients".format(train_7.shape[0]))
+plt.legend()
+plt.show()
